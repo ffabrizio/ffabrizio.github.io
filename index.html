@@ -1,0 +1,165 @@
+﻿<html lang="en">
+    <head>
+      <title>Jazzman's portfolio</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta http-equiv="refresh" content="60">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+      <style>
+        .table-custom tr {
+          font-family: apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+          font-size: 0.9rem;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container-fluid">
+          <h1 class="display-4">Jazzman's portfolio</h1>
+      </div>
+      
+      <div class="container-fluid" id="app"></div>
+    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+    <script type="text/babel">
+      
+      class Table extends React.Component {
+        constructor() {
+          super()
+          
+          this.state = {
+            tokens: {
+              'bitcoin': 0.4 ,
+              'ethereum': 321 ,
+              'neo': 63.4 ,
+              'tenx': 450 ,
+              'bancor': 190 ,
+              'omisego': 715 ,
+              'basic-attention-token': 958 ,
+              'civic': 803 ,
+              'golem-network-tokens': 1890
+            },
+            loading: true,
+            currency: { symbol: '£', val : 'gbp' },
+            data: [],
+          }
+        }
+  
+        componentWillMount () {
+          this.fetchData()
+        }
+  
+        fetchData() {
+          const apiUrl = 'https://api.coinmarketcap.com/v1/ticker/?convert=GBP'
+          fetch(apiUrl)
+            .then(response => response.json())
+            .then(json => {
+              this.setState({ loading: false, data: json })
+            })
+        }
+  
+        render() {
+          let total = 0
+  
+          const buildRows = (token) => {
+            if (this.state.tokens[token.id]) {
+              total += this.state.tokens[token.id] * token[`price_${this.state.currency.val}`]
+              return (<TableRow token={token} qty={this.state.tokens[token.id]} currency={this.state.currency}></TableRow>)
+            }
+          }
+  
+          const currencies = [
+            { symbol: '$', val : 'usd' },
+            { symbol: '£', val : 'gbp' }
+          ]
+  
+          const changeCurrency = (e) => {
+            if (this.state.currency.val === 'usd') {
+              this.setState({ currency: currencies[1] })
+            } else {
+              this.setState({ currency: currencies[0] })
+            }
+          }
+  
+          if (this.state.loading) {
+            return (
+              <div class="alert alert-success" role="alert">
+                <strong>Loading ...</strong>
+              </div>
+            )
+          } else {
+            return (
+              <table className="table table-custom">
+                <thead>
+                  <tr className="table-warning">
+                    <th>Stock</th>
+                    <th>% 1h</th>
+                    <th>% 24h</th>
+                    <th>% 7d</th>
+                    <th>Amount</th>
+                    <th>Unit price</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.state.data.map(buildRows)}
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+                      <button type="button" className="btn btn-outline-primary btn-block" title="Change currency"
+                        onClick={changeCurrency}>
+                        {this.state.currency.symbol}{(total).toFixed(2)}
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            )
+          }
+        }
+      }
+  
+      class TableRow extends React.Component {
+  
+        getPerformance(val) {
+          if (val <= 0) { 
+            return (<td className="text-danger">{val}%</td>)
+          } else {
+            return (<td className="text-success">{val}%</td>)
+          }
+          return (<td>{val}%</td>)
+        }
+  
+        render() {
+          const symbol = this.props.currency.symbol
+          const price = this.props.token[`price_${this.props.currency.val}`]
+          
+          return (
+            <tr>
+              <td><strong>[{this.props.token.symbol}]</strong> {this.props.token.name}</td>
+              {this.getPerformance(this.props.token.percent_change_1h)}
+              {this.getPerformance(this.props.token.percent_change_24h)}
+              {this.getPerformance(this.props.token.percent_change_7d)}
+              <td>{this.props.qty}</td>
+              <td>{symbol}{(price * 1).toFixed(2)}</td>
+              <td>
+                <button type="button" className="btn btn-outline-danger btn-block btn-sm">
+                  {symbol}{(price * this.props.qty).toFixed(2)}
+                </button>
+              </td>
+            </tr>
+        )}
+      }
+  
+      ReactDOM.render(
+          <Table />, 
+          document.getElementById('app')
+        )
+    </script>
+  </html>
