@@ -10,15 +10,23 @@
           font-family: apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
           font-size: 0.9rem;
         }
+        .table-custom th {
+          font-weight: normal;
+          color: #006666
+        }
+        .smaller {
+          font-size: 1.5rem;
+        }
       </style>
     </head>
     <body>
       <div class="container-fluid">
-          <h1 class="display-4">Jazzman's portfolio</h1>
+          <h1 class="display-4 smaller">Jazzman's portfolio</h1>
       </div>
       
       <div class="container-fluid" id="app"></div>
     </body>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
@@ -85,7 +93,7 @@
           if (this.state.loading) {
             return (
               <div class="alert alert-success" role="alert">
-                <strong>Loading ...</strong>
+                Loading ...
               </div>
             )
           } else {
