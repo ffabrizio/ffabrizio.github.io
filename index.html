@@ -136,7 +136,6 @@
       }
   
       class TableRow extends React.Component {
-  
         getPerformance(val) {
           if (val <= 0) { 
             return (<td className="text-danger">{val}%</td>)
@@ -149,13 +148,16 @@
         render() {
           const symbol = this.props.currency.symbol
           const price = this.props.token[`price_${this.props.currency.val}`]
-          const iconUrl = `"https://files.coinmarketcap.com/static/img/coins/16x16/${this.props.token.id}.png"`
+          const iconUrl = `https://files.coinmarketcap.com/static/img/coins/32x32/${this.props.token.id}.png`
+          const coinUrl = `https://coinmarketcap.com/currencies/${this.props.token.id}/`
+          const buttonClassNames = () => this.props.token.percent_change_7d >= 0 ?
+            "btn btn-outline-success btn-block btn-sm" :
+            "btn btn-outline-danger btn-block btn-sm"
 
           return (
             <tr>
               <td>
-                <img src={`https://files.coinmarketcap.com/static/img/coins/16x16/${this.props.token.id}.png`} class="currency-logo" alt="" />
-                <span></span> {this.props.token.name}
+                <img src={iconUrl} class="currency-logo" alt={this.props.token.symbol} /> <a href={coinUrl} target="cmc">{this.props.token.name}</a>
               </td>
               {this.getPerformance(this.props.token.percent_change_1h)}
               {this.getPerformance(this.props.token.percent_change_24h)}
@@ -163,7 +165,7 @@
               <td>[{this.props.token.symbol}] {this.props.qty}</td>
               <td>{symbol}{(price * 1).toFixed(2)}</td>
               <td>
-                <button type="button" className="btn btn-outline-danger btn-block btn-sm">
+                <button type="button" className={buttonClassNames()}>
                   {symbol}{(price * this.props.qty).toFixed(2)}
                 </button>
               </td>
