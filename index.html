@@ -4,7 +4,6 @@
       <meta charset="utf-8">
       <meta name="mobile-web-app-capable" content="yes">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <meta http-equiv="refresh" content="60">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
       <style>
         .table-custom tr {
@@ -150,14 +149,18 @@
         render() {
           const symbol = this.props.currency.symbol
           const price = this.props.token[`price_${this.props.currency.val}`]
-          
+          const iconUrl = `"https://files.coinmarketcap.com/static/img/coins/16x16/${this.props.token.id}.png"`
+
           return (
             <tr>
-              <td><span>[{this.props.token.symbol}]</span> {this.props.token.name}</td>
+              <td>
+                <img src={`https://files.coinmarketcap.com/static/img/coins/16x16/${this.props.token.id}.png`} class="currency-logo" alt="" />
+                <span></span> {this.props.token.name}
+              </td>
               {this.getPerformance(this.props.token.percent_change_1h)}
               {this.getPerformance(this.props.token.percent_change_24h)}
               {this.getPerformance(this.props.token.percent_change_7d)}
-              <td>{this.props.qty}</td>
+              <td>[{this.props.token.symbol}] {this.props.qty}</td>
               <td>{symbol}{(price * 1).toFixed(2)}</td>
               <td>
                 <button type="button" className="btn btn-outline-danger btn-block btn-sm">
