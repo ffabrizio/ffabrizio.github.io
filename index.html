@@ -20,15 +20,26 @@
           font-size: 1.5rem;
           padding-top: 10px;
           padding-left: 10px;
+        
+        }
+        .img.smaller {
+          width: 80px;
+        
+        }
+        .centred {
+          text-align: center;
         }
       </style>
     </head>
     <body>
-      <div class="container-fluid">
-          <h1 class="display-4 smaller">Jazzman's portfolio</h1>
+        <h1 class="display-4 smaller centred">
+            <img class="img smaller" src="icon.png" alt="Jazzman" />
+            <br />
+            Jazzman's portfolio
+        </h1>
+      <div id="app">
+        
       </div>
-      
-      <div class="container-fluid" id="app"></div>
     </body>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
@@ -96,9 +107,9 @@
   
           if (this.state.loading) {
             return (
-              <div class="alert alert-success" role="alert">
-                Loading ...
-              </div>
+              <h1>
+
+              </h1>
             )
           } else {
             return (
@@ -172,7 +183,14 @@
       }
   
       ReactDOM.render(
-          <Table />, 
+
+
+          
+          <Table />
+
+
+          ,
+
           document.getElementById('app')
         )
     </script>
